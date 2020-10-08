@@ -13,7 +13,7 @@ import { Item, ApiResponse } from './interfaces/item.interface';
 
 @Controller('item')
 export class ItemsController {
-  constructor (private readonly itemService: ItemsService) {}
+  constructor(private readonly itemService: ItemsService) {}
 
   @Get()
   async getAll(): Promise<ApiResponse> {
@@ -22,27 +22,48 @@ export class ItemsController {
       status: 'Success',
       message: 'Successfully fetched all items',
       data
-    }
+    };
   }
 
   @Post()
-  async create(@Body() item: CreateItemDto): Promise<Item> {
-    return this.itemService.createItem(item);
+  async create(@Body() item: CreateItemDto): Promise<ApiResponse> {
+    const data = await this.itemService.createItem(item);
+    return {
+      status: 'Success',
+      message: 'Successfully created item',
+      data
+    };
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string): Promise<Item> {
-    return this.itemService.findOne(id);
+  async getOne(@Param('id') id: string): Promise<ApiResponse> {
+    const data = await this.itemService.findOne(id);
+    return {
+      status: 'Success',
+      message: 'Successfully fetched item',
+      data
+    };
   }
 
   @Delete(':id')
-  async deleteOne(@Param('id') id: string): Promise<string> {
+  async deleteOne(@Param('id') id: string): Promise<ApiResponse> {
     await this.itemService.deleteOne(id);
-    return `deleted item with id: ${id}`;
+    return {
+      status: 'Success',
+      message: `deleted item with id: ${id}`
+    };
   }
 
   @Put(':id')
-  updateOne(@Body() updateItem: CreateItemDto, @Param('id') id: string): Promise<Item> {
-    return this.itemService.updateItem(updateItem, id); 
+  async updateOne(
+    @Body() updateItem: CreateItemDto,
+    @Param('id') id: string
+  ): Promise<ApiResponse> {
+    const data = await this.itemService.updateItem(updateItem, id);
+    return {
+      status: 'Success',
+      message: 'Successfully fetched item',
+      data
+    };
   }
 }

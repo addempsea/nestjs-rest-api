@@ -8,5 +8,5 @@ export interface Item {
 export interface ApiResponse {
     status: string;
     message?: string;
-    data?: Item[];
+    data?: any;
 }
